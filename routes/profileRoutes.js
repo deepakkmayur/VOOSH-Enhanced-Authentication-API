@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router();
 const profileController = require('../controllers/profileController');
 const {getMyProfile,updateProfile,toggleProfilePrivacy,getPublicProfiles,getAllProfiles}=require("../controllers/profileController")
-const authMiddleware = require('../middleware/authMiddleware');
+const {tokenVerify,authorize} = require('../middleware/authMiddleware');
 
 
 
-router.get('/myprofile',getMyProfile);
-router.put('/update', updateProfile);
-router.put('/toggleprivacy', toggleProfilePrivacy);
-router.get('/public',getPublicProfiles);
-router.get('/all', getAllProfiles);
+// router.get('/myprofile',tokenVerify,getMyProfile);
+router.get('/myprofile',tokenVerify,authorize,getMyProfile);
+router.put('/update',tokenVerify,authorize, updateProfile);
+router.put('/toggleprivacy',tokenVerify,authorize, toggleProfilePrivacy);
+router.get('/public',tokenVerify,authorize,getPublicProfiles);
+router.get('/all',tokenVerify,authorize, getAllProfiles);
 
 module.exports = router;

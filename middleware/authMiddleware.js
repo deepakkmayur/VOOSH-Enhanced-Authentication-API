@@ -34,4 +34,23 @@ const tokenVerify = async (req, res, next) => {
 }
 
 
-module.exports = tokenVerify
+const authorize = (req, res, next) => {
+  try {
+   // console.log(req.user.role,"-----------------");
+   if (req.user.role === 'admin'|| req.user.role === 'user') {
+       // Admin has access to all routes
+       next();
+   } else {
+       // Unauthorized user
+       return res.status(403).json({ message: 'not authorized'});
+   }
+  } catch (error) {
+   console.log(error);
+   res.status(400).json({ message: "catch error in authorize" })
+  }
+};
+
+module.exports = {tokenVerify, authorize };
+
+
+// module.exports = tokenVerify

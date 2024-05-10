@@ -2,7 +2,7 @@ const Profile = require('../models/Profile');
 
 // Get current user's profile
 const getMyProfile = async (req, res) => {
-   
+   console.log("reached");
 };
 
 // Update user's profile
