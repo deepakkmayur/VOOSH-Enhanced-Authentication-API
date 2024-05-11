@@ -5,7 +5,7 @@ const { JWT_SECRET_KEY } = require("../env")
 const Profile = require('../models/Profile');
 const env=require("../env")
 
-//token generation
+//token generation 
 const generateToken=async(id)=>{
     return jwt.sign({id}, JWT_SECRET_KEY, { expiresIn: '1h' });
  }
@@ -135,10 +135,6 @@ const loginAdmin = async (req, res) => {
 };
 
 
-// Login or register with external service (e.g., Google, Facebook)
-const loginOrRegisterExternal = async (req, res) => {
-    // Implement login/register with external service logic
-};
 
 
 
@@ -147,5 +143,4 @@ module.exports={
     registerAdmin,
     loginUser,
     loginAdmin,
-    loginOrRegisterExternal,
 }

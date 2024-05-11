@@ -1,7 +1,7 @@
 const Profile = require('../models/Profile');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
-
+const multer = require('multer');
 
 // create a Profile
 const createMyProfile = async (req, res) => {
@@ -161,6 +161,43 @@ const getAllProfiles = async (req, res) => {
 };
 
 
+// Multer configuration for profile photo uploads
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/profiles'); 
+    },
+    filename: (req, file, cb) => {
+        const fileExtension = file.originalname.split('.').pop();
+        cb(null, 'profile-'+ '.' + fileExtension); 
+    }
+});
+
+const upload = multer({ storage });
+
+const uploadProfilePhoto = async(req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
+
+        const filePath = req.file.path;
+        const userId = req.user._id;
+        let profile = await Profile.findOne({user:userId});
+        if (!profile) {
+            return res.status(404).json({ message: 'Profile not found' });
+        }   
+        profile.photoUrl = filePath;
+        await profile.save();
+
+        res.json({ message: 'Profile photo uploaded successfully', filePath });
+    } catch (error) {
+        console.error('Error in profile photo upload:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+
 module.exports = {
     createMyProfile,
     getMyProfile,
@@ -168,5 +205,8 @@ module.exports = {
     userProfilePrivacy,
     getPublicProfiles,
     getAllProfiles,
+    uploadProfilePhoto,
+    uploadMiddleware: upload.single('photo'),
+
 
 }
