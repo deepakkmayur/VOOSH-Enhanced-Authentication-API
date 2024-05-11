@@ -36,7 +36,6 @@ const tokenVerify = async (req, res, next) => {
 
 const authorize = (req, res, next) => {
   try {
-   // console.log(req.user.role,"-----------------");
    if (req.user.role === 'admin'|| req.user.role === 'user') {
        // Admin has access to all routes
        next();

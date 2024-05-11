@@ -89,7 +89,7 @@ const loginUser = async (req, res) => {
         const user={
            _id:userExists._id,
            name:userExists.name,
-        //    email:userExists.email,
+           email:userExists.email,
            role: userExists.role,
            token: await generateToken(userExists._id)
         }
